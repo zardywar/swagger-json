@@ -255,7 +255,7 @@ jq '
 ' \
     /usr/share/nginx/html/swagger.json \
     | xargs echo "Total API operations:"
-
+    
 # ============================================================
 # Configure Swagger UI
 # ============================================================
@@ -265,12 +265,29 @@ echo "========================================"
 echo "Configuring Swagger UI"
 echo "========================================"
 
+unset SWAGGER_JSON
 unset SWAGGER_JSON_URL
 unset URL
 
-export SWAGGER_JSON="/swagger.json"
+cat > /usr/share/nginx/html/swagger-initializer.js <<EOF
+window.onload = function() {
+  window.ui = SwaggerUIBundle({
+    url: "swagger.json",
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  });
+};
+EOF
 
-echo "Swagger JSON source: $SWAGGER_JSON"
+echo "Swagger UI configured to use swagger.json"
 
 # ============================================================
 # Start Swagger UI
