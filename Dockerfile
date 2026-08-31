@@ -2,8 +2,10 @@ FROM swaggerapi/swagger-ui:latest
 
 USER root
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl jq
 
-COPY download-swagger.sh /docker-entrypoint.d/05-download-swagger.sh
+COPY entrypoint.sh /entrypoint-custom.sh
 
-RUN chmod +x /docker-entrypoint.d/05-download-swagger.sh
+RUN chmod +x /entrypoint-custom.sh
+
+ENTRYPOINT ["/entrypoint-custom.sh"]
