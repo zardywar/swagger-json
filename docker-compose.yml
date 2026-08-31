@@ -1,0 +1,18 @@
+services:
+  swagger-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: swagger-ui
+    ports:
+      - "8080:8080"
+    environment:
+      SWAGGER_URL: ${SWAGGER_URL}
+      SWAGGER_USERNAME: ${SWAGGER_USERNAME}
+      SWAGGER_PASSWORD: ${SWAGGER_PASSWORD}
+      SWAGGER_JSON: /swagger/swagger.json
+    volumes:
+      - swagger-data:/swagger
+
+volumes:
+  swagger-data:
